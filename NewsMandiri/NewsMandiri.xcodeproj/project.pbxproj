@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FA09EE82301A2E1800A0BDFA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FA09EE81301A2E1800A0BDFA /* Alamofire */; };
+		FA09EE85301A2E2D00A0BDFA /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = FA09EE84301A2E2D00A0BDFA /* SDWebImage */; };
+		FA09EE8B301A2E9900A0BDFA /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FA09EE8A301A2E9900A0BDFA /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FA09EE44301A29F500A0BDFA /* NewsMandiri.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsMandiri.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA09EE8B301A2E9900A0BDFA /* SnapKit in Frameworks */,
+				FA09EE85301A2E2D00A0BDFA /* SDWebImage in Frameworks */,
+				FA09EE82301A2E1800A0BDFA /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +87,9 @@
 			);
 			name = NewsMandiri;
 			packageProductDependencies = (
+				FA09EE81301A2E1800A0BDFA /* Alamofire */,
+				FA09EE84301A2E2D00A0BDFA /* SDWebImage */,
+				FA09EE8A301A2E9900A0BDFA /* SnapKit */,
 			);
 			productName = NewsMandiri;
 			productReference = FA09EE44301A29F500A0BDFA /* NewsMandiri.app */;
@@ -107,6 +119,11 @@
 			);
 			mainGroup = FA09EE3B301A29F500A0BDFA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FA09EE80301A2E1800A0BDFA /* XCRemoteSwiftPackageReference "Alamofire" */,
+				FA09EE83301A2E2D00A0BDFA /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				FA09EE89301A2E9900A0BDFA /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA09EE45301A29F500A0BDFA /* Products */;
 			projectDirPath = "";
@@ -150,7 +167,6 @@
 				INFOPLIST_FILE = NewsMandiri/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -182,7 +198,6 @@
 				INFOPLIST_FILE = NewsMandiri/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -345,6 +360,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA09EE80301A2E1800A0BDFA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.12.0;
+			};
+		};
+		FA09EE83301A2E2D00A0BDFA /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.7;
+			};
+		};
+		FA09EE89301A2E9900A0BDFA /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA09EE81301A2E1800A0BDFA /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA09EE80301A2E1800A0BDFA /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		FA09EE84301A2E2D00A0BDFA /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA09EE83301A2E2D00A0BDFA /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		FA09EE8A301A2E9900A0BDFA /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA09EE89301A2E9900A0BDFA /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FA09EE3C301A29F500A0BDFA /* Project object */;
 }

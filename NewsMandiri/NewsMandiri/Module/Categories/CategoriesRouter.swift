@@ -27,4 +27,8 @@ class CategoriesRouter: PresenterToRouterCategoriesProtocol {
         return viewController
     }
     
+    
+    func navigateToSource(on view: any PresenterToViewCategoriesProtocol, with category: String) {
+        
+    }
 }

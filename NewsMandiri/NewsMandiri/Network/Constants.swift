@@ -1,6 +1,17 @@
+//
+//  Constants.swift
+//  NewsMandiri
+//
+//  Created by vprijal on 29/07/26.
+//
+
+import Foundation
+import Alamofire
+
 struct Constants {
     struct ProductionServer {
         static let baseURL = "https://newsapi.org/v2"
+        static let apiKey = "4a27365f23b24d8eb502b59016e31f07"
     }
 }
 
