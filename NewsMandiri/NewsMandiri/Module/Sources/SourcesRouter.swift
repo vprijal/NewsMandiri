@@ -28,7 +28,10 @@ class SourcesRouter: PresenterToRouterSourcesProtocol {
     }
     
     func navigateToArticle(on view: PresenterToViewSourcesProtocol, with sourceId: String) {
-       
+        let sourceVC = ArticlesRouter.createModule(sourceId: sourceId)
+        sourceVC.navigationItem.title = sourceId
+        let viewController = view as! SourcesViewController
+        viewController.navigationController?.pushViewController(sourceVC, animated: true)
     }
     
 }

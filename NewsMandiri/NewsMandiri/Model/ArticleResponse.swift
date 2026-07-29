@@ -5,13 +5,13 @@
 //  Created by vprijal on 29/07/26.
 //
 
-struct ArticleResponse: Codable, Hashable {
+struct ArticleResponse: Codable, Hashable, Sendable {
     let status: String
     let totalResults: Int
     let articles: [Article]
 }
 
-struct Article: Codable, Hashable {
+nonisolated struct Article: Codable, Hashable, Sendable {
     let source: SourceArticle
     let author: String?
     let title: String
@@ -29,7 +29,7 @@ struct Article: Codable, Hashable {
     
 }
 
-struct SourceArticle: Codable, Hashable {
+struct SourceArticle: Codable, Hashable, Sendable {
     let id: String?
     let name: String
 }
