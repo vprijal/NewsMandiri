@@ -13,6 +13,7 @@ enum ICGCollectionViewState {
     case loading
     case done
     case retry
+    case empty
 }
 
 extension UICollectionView {
@@ -50,6 +51,19 @@ extension UICollectionView {
             subView.buttonRetry.action(.touchUpInside) { _ in
                 completion?()
             }
+            return
+        case .empty:
+            let subView = EmptyView(frame: view.frame)
+            view.addSubview(subView)
+            subView.snp.makeConstraints { make in
+                make.top.equalToSuperview()
+                make.bottom.equalToSuperview()
+                make.left.equalToSuperview()
+                make.right.equalToSuperview()
+            }
+            self.backgroundView = view
+            completion?()
+            return
         }
     }
 }

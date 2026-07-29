@@ -8,13 +8,13 @@
 import Foundation
 
 // MARK: - SourceResponse
-struct SourceResponse: Codable, Hashable {
+struct SourceResponse: Codable, Hashable, Sendable {
     let status: String
     let sources: [Source]
 }
 
 // MARK: - Source
-struct Source: Codable, Hashable {
+nonisolated struct Source: Codable, Hashable, Sendable {
     let id, name, sourceDescription: String
     let url: String
     let category, language, country: String
