@@ -20,19 +20,27 @@ class ArticlesPresenter: ViewToPresenterArticlesProtocol {
         interactor?.loadArticle()
     }
     
+    func loadNextPage() {
+        interactor?.loadNextPage()
+    }
+    
+    func refresh() {
+        interactor?.refreshArticle()
+    }
+    
     func didSelectRowAt(article: Article) {
         interactor?.retrieveArticle(article: article)
     }
 }
 
 extension ArticlesPresenter: InteractorToPresenterArticlesProtocol {
-    func fetchArticleSuccess(article: [Article]) {
-        self.articles = article
-        view?.onFetchArticleSuccess(article: article)
+    func fetchArticleSuccess(articles: [Article], isFirstPage: Bool) {
+        self.articles = articles
+        view?.onFetchArticleSuccess(articles: articles, isFirstPage: isFirstPage)
     }
     
-    func fetchArticleFailure() {
-        view?.onFetchArticleFailure()
+    func fetchArticleFailure(isFirstPage: Bool) {
+        view?.onFetchArticleFailure(isFirstPage: isFirstPage)
     }
     
     func findArticleSuccess(_ article: Article) {

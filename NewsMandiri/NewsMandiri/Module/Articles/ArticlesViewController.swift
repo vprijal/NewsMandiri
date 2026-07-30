@@ -25,6 +25,12 @@ class ArticlesViewController: UIViewController {
     
     lazy var collectionView: UICollectionView = createCollectionView()
     lazy private var dataSource = self.configureDataSource()
+    lazy private var refreshControl: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        rc.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        return rc
+    }()
+    
     private var searchBar: UISearchController = {
         let sb = UISearchController()
         sb.searchBar.placeholder = "Enter Article Title"
@@ -32,25 +38,41 @@ class ArticlesViewController: UIViewController {
         return sb
     }()
     
+    private var isSearching: Bool {
+        if let text = searchBar.searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty {
+            return true
+        }
+        return false
+    }
 }
 
-extension ArticlesViewController: PresenterToViewArticlesProtocol{
-    // TODO: Implement View Output Methods
-    func onFetchArticleSuccess(article: [Article]) {
-        self.collectionView.setStateView(with: .done) {
-            var snap = self.dataSource.snapshot()
-            if !snap.itemIdentifiers(inSection: .main).isEmpty {
-                snap.deleteItems(snap.itemIdentifiers(inSection: .main))
+extension ArticlesViewController: PresenterToViewArticlesProtocol {
+    func onFetchArticleSuccess(articles: [Article], isFirstPage: Bool) {
+        refreshControl.endRefreshing()
+        if articles.isEmpty {
+            self.collectionView.setStateView(with: .empty)
+        } else {
+            self.collectionView.setStateView(with: .done) {
+                var snap = self.dataSource.snapshot()
+                if !snap.sectionIdentifiers.contains(.main) {
+                    snap.appendSections([.main])
+                }
+                if !snap.itemIdentifiers(inSection: .main).isEmpty {
+                    snap.deleteItems(snap.itemIdentifiers(inSection: .main))
+                }
+                snap.appendItems(articles, toSection: .main)
+                self.dataSource.apply(snap, animatingDifferences: false)
             }
-            snap.appendItems(article, toSection: .main)
-            self.dataSource.apply(snap)
         }
     }
     
-    func onFetchArticleFailure() {
-        self.collectionView.setStateView(with: .retry) {
-            self.collectionView.setStateView(with: .loading) {
-                self.presenter?.viewDidLoad()
+    func onFetchArticleFailure(isFirstPage: Bool) {
+        refreshControl.endRefreshing()
+        if isFirstPage {
+            self.collectionView.setStateView(with: .retry) {
+                self.collectionView.setStateView(with: .loading) {
+                    self.presenter?.viewDidLoad()
+                }
             }
         }
     }
@@ -65,6 +87,7 @@ extension ArticlesViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         
         view.addSubview(collectionView)
+        collectionView.refreshControl = refreshControl
         collectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
@@ -72,6 +95,11 @@ extension ArticlesViewController {
             make.bottom.equalToSuperview()
         }
         collectionView.dataSource = dataSource
+        collectionView.setStateView(with: .loading)
+    }
+    
+    @objc private func handleRefresh() {
+        presenter?.refresh()
     }
     
     private func configureDataSource() -> GeneralCDataSource {
@@ -118,8 +146,7 @@ extension ArticlesViewController {
         }
         var searchData: [Article] = []
         for element in data {
-            
-            if element.title.lowercased().contains(search.lowercased()) {
+            if element.title?.lowercased().contains(search.lowercased()) == true {
                 searchData.append(element)
             }
         }
@@ -134,6 +161,17 @@ extension ArticlesViewController: UICollectionViewDelegate {
         let item = self.dataSource.snapshot().itemIdentifiers[indexPath.row]
         presenter?.didSelectRowAt(article: item)
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !isSearching else { return }
+        let position = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        
+        if contentHeight > 0 && position > (contentHeight - frameHeight - 200) {
+            presenter?.loadNextPage()
+        }
+    }
 }
 
 extension ArticlesViewController: UISearchResultsUpdating, UISearchControllerDelegate {
@@ -146,12 +184,12 @@ extension ArticlesViewController: UISearchResultsUpdating, UISearchControllerDel
                 }
             }
         } else {
-            self.presenter?.view?.onFetchArticleSuccess(article: self.presenter?.articles ?? [])
+            self.presenter?.view?.onFetchArticleSuccess(articles: self.presenter?.articles ?? [], isFirstPage: true)
         }
     }
     
     func didDismissSearchController(_ searchController: UISearchController) {
         print(searchController.searchBar)
-        self.presenter?.view?.onFetchArticleSuccess(article: self.presenter?.articles ?? [])
+        self.presenter?.view?.onFetchArticleSuccess(articles: self.presenter?.articles ?? [], isFirstPage: true)
     }
 }

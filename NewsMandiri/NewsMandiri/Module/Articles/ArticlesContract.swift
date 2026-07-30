@@ -11,8 +11,8 @@ import Foundation
 
 // MARK: View Output (Presenter -> View)
 protocol PresenterToViewArticlesProtocol: AnyObject {
-    func onFetchArticleSuccess(article: [Article])
-    func onFetchArticleFailure()
+    func onFetchArticleSuccess(articles: [Article], isFirstPage: Bool)
+    func onFetchArticleFailure(isFirstPage: Bool)
 }
 
 
@@ -22,8 +22,10 @@ protocol ViewToPresenterArticlesProtocol: AnyObject {
     var view: PresenterToViewArticlesProtocol? { get set }
     var interactor: PresenterToInteractorArticlesProtocol? { get set }
     var router: PresenterToRouterArticlesProtocol? { get set }
-    var articles: [Article] { get set}
+    var articles: [Article] { get set }
     func viewDidLoad()
+    func loadNextPage()
+    func refresh()
     func didSelectRowAt(article: Article)
 }
 
@@ -32,16 +34,20 @@ protocol ViewToPresenterArticlesProtocol: AnyObject {
 protocol PresenterToInteractorArticlesProtocol {
     
     var presenter: InteractorToPresenterArticlesProtocol? { get set }
-    var sourceID: String? {get set}
+    var sourceID: String? { get set }
+    var isFetching: Bool { get }
+    var hasMorePages: Bool { get }
     func loadArticle()
+    func loadNextPage()
+    func refreshArticle()
     func retrieveArticle(article: Article)
 }
 
 
 // MARK: Interactor Output (Interactor -> Presenter)
 protocol InteractorToPresenterArticlesProtocol: AnyObject {
-    func fetchArticleSuccess(article: [Article])
-    func fetchArticleFailure()
+    func fetchArticleSuccess(articles: [Article], isFirstPage: Bool)
+    func fetchArticleFailure(isFirstPage: Bool)
     func findArticleSuccess(_ article: Article)
 }
 

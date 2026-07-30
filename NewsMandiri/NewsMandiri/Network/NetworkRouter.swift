@@ -10,7 +10,7 @@ import Alamofire
 
 enum NetworkRouter: NetworkConfiguration {
     case getSources(category: String)
-    case article(id: String)
+    case article(id: String, page: Int = 1, pageSize: Int = 20)
     
     var method: HTTPMethod {
         switch self {
@@ -22,9 +22,14 @@ enum NetworkRouter: NetworkConfiguration {
     var parameters: RequestParams {
         switch self {
         case .getSources(let category):
-            return.url(["category": category, "apiKey":Constants.ProductionServer.apiKey ])
-        case .article(let id):
-            return.url(["sources": id, "apiKey":Constants.ProductionServer.apiKey ])
+            return .url(["category": category, "apiKey": Constants.ProductionServer.apiKey])
+        case .article(let id, let page, let pageSize):
+            return .url([
+                "sources": id,
+                "page": page,
+                "pageSize": pageSize,
+                "apiKey": Constants.ProductionServer.apiKey
+            ])
         }
     }
     

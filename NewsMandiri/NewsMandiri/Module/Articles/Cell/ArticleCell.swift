@@ -70,6 +70,7 @@ class ArticleCell: UICollectionViewCell {
             make.height.equalTo(300)
         }
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         
         contentView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
@@ -111,14 +112,26 @@ class ArticleCell: UICollectionViewCell {
             imageView.image = UIImage(named: "placeholder")
         }
         
+        guard let publishedAt = data.publishedAt else {
+            dateLabel.text = ""
+            return
+        }
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         let newDateFormater = DateFormatter()
         newDateFormater.dateFormat = "dd-MMM-yyyy"
-        if let theDate = dateFormatter.date(from: data.publishedAt) {
-            //            print(newDateFormater.string(from: theDate))
+        if let theDate = dateFormatter.date(from: publishedAt) {
             dateLabel.text = newDateFormater.string(from: theDate)
+        } else {
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let theDate = isoFormatter.date(from: publishedAt) {
+                dateLabel.text = newDateFormater.string(from: theDate)
+            } else {
+                dateLabel.text = publishedAt
+            }
         }
     }
 }
