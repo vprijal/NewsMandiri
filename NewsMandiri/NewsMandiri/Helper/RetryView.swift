@@ -11,7 +11,54 @@ import SnapKit
 
 class RetryView: UIView {
 
-    var buttonRetry = UIButton()
+    lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        if #available(iOS 13.0, *) {
+            imageView.image = UIImage(systemName: "exclamationmark.triangle")
+        }
+        imageView.tintColor = .systemRed
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Failed to Load Data"
+        label.textColor = .darkGray
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+
+    lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Something went wrong. Please try again."
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+
+    var buttonRetry: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Retry", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        button.backgroundColor = UIColor(named: "#002E4E") ?? UIColor(red: 0/255, green: 46/255, blue: 78/255, alpha: 1)
+        button.setCorner(radius: 8)
+        return button
+    }()
+
+    lazy var stackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [imageView, titleLabel, descriptionLabel, buttonRetry])
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 12
+        stack.setCustomSpacing(16, after: descriptionLabel)
+        return stack
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,17 +73,22 @@ class RetryView: UIView {
     
     func setupView() {
         backgroundColor = .white
-        addSubview(buttonRetry)
-        buttonRetry.setTitle("Retry", for: .normal)
-        buttonRetry.setTitleColor(.black, for: .normal)
-        buttonRetry.backgroundColor = .red
-        buttonRetry.setTitleColor(.white, for: .normal)
-        buttonRetry.setCorner(radius: 8)
+        addSubview(stackView)
+        
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(60)
+        }
+        
         buttonRetry.snp.makeConstraints { make in
-            make.width.equalTo(120)
-            make.height.equalTo(45)
+            make.width.equalTo(140)
+            make.height.equalTo(44)
+        }
+        
+        stackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
+            make.leading.greaterThanOrEqualToSuperview().offset(24)
+            make.trailing.lessThanOrEqualToSuperview().offset(-24)
         }
     }
 }
