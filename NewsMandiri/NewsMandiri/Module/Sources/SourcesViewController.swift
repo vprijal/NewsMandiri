@@ -37,13 +37,17 @@ class SourcesViewController: UIViewController {
 extension SourcesViewController: PresenterToViewSourcesProtocol{
     // TODO: Implement View Output Methods
     func onFetchSourceSuccess(source: [Source]) {
-        self.collectionView.setStateView(with: .done) {
-            var snap = self.dataSource.snapshot()
-            if !snap.itemIdentifiers(inSection: .main).isEmpty {
-                snap.deleteItems(snap.itemIdentifiers(inSection: .main))
+        if source.isEmpty {
+            self.collectionView.setStateView(with: .empty)
+        } else {
+            self.collectionView.setStateView(with: .done) {
+                var snap = self.dataSource.snapshot()
+                if !snap.itemIdentifiers(inSection: .main).isEmpty {
+                    snap.deleteItems(snap.itemIdentifiers(inSection: .main))
+                }
+                snap.appendItems(source, toSection: .main)
+                self.dataSource.apply(snap)
             }
-            snap.appendItems(source, toSection: .main)
-            self.dataSource.apply(snap)
         }
     }
     
